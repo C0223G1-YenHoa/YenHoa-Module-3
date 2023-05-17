@@ -38,8 +38,6 @@ ma_loai_khach int primary key,
 ten_loai_khach varchar(45)
 );
 
--- alter table loai_khach change ten_lai_khach ten_loai_khach varchar(45);
-
 create table khach_hang(
 ma_khach_hang int primary key not null,
 ma_loai_khach int not null,
@@ -218,7 +216,7 @@ where lk.ten_loai_khach="Diamond"
 group by hd.ma_khach_hang
 order by so_lan_dat_phong;
 
-select kh.ma_khach_hang,kh.ho_ten,lk.ten_loai_khach,hd.ma_hop_dong,dv.ten_dich_vu,hd.ngay_lam_hop_dong,hd.ngay_ket_thuc,sum(dv.chi_phi_thue + hdct.so_luong * dvdk.gia) as tong_tien
+select kh.ma_khach_hang,kh.ho_ten,lk.ten_loai_khach,hd.ma_hop_dong,dv.ten_dich_vu,hd.ngay_lam_hop_dong,hd.ngay_ket_thuc,ifnull(dv.chi_phi_thue + ifnull(sum(hdct.so_luong * dvdk.gia),0),0) as tong_tien
 from loai_khach as lk
 join khach_hang as kh on lk.ma_loai_khach=kh.ma_loai_khach
 join hop_dong as hd on kh.ma_khach_hang=hd.ma_khach_hang
@@ -226,6 +224,54 @@ left join hop_dong_chi_tiet as hdct on hdct.ma_hop_dong=hd.ma_hop_dong
 left join dich_vu_di_kem as dvdk on hdct.ma_dich_vu_di_kem=dvdk.ma_dich_vu_di_kem
 join dich_vu as dv on hd.ma_dich_vu=dv.ma_dich_vu
 group by hd.ma_hop_dong;
+
+select dv.ma_dich_vu,dv.ten_dich_vu,dv.dien_tich,dv.chi_phi_thue,ldv.ten_loai_dich_vu
+from dich_vu as dv
+right join loai_dich_vu ldv 
+on dv.ma_loai_dich_vu=ldv.ma_loai_dich_vu
+where dv.ma_dich_vu not in (
+select  hop_dong.ma_dich_vu
+from hop_dong
+where(
+quarter(ngay_lam_hop_dong) = 1 and year(ngay_lam_hop_dong)=2021
+)
+);
+
+select dv.ma_dich_vu,dv.ten_dich_vu,dv.dien_tich,dv.so_nguoi_toi_da,dv.chi_phi_thue,ldv.ten_loai_dich_vu
+from dich_vu as dv
+right join loai_dich_vu ldv 
+on dv.ma_loai_dich_vu=ldv.ma_loai_dich_vu
+where dv.ma_dich_vu not in (
+select  hop_dong.ma_dich_vu
+from hop_dong
+where(
+year(ngay_lam_hop_dong)=2021
+)
+);
+
+select ho_ten
+from khach_hang
+union
+select ho_ten
+from khach_hang;
+
+select distinct ho_ten from khach_hang;
+
+select ho_ten
+from khach_hang
+group by ho_ten;
+
+select month(ngay_lam_hop_dong) as thang ,count(ma_hop_dong) as "so luong khach hang"
+from  hop_dong
+group by month(ngay_lam_hop_dong);
+
+select hd.ma_hop_dong,hd.ngay_lam_hop_dong,hd.ngay_ket_thuc,hd.tien_dat_coc
+from hop_dong hd
+
+
+
+
+
 
 
 
