@@ -6,23 +6,21 @@
     <link rel="stylesheet" href="ex_1.css">
 </head>
 <body>
-<div id="menu">
-    <ul>
-        <li><a>Logo</a></li>
-        <li><a>Home</a></li>
-        <li><a>About</a></li>
-        <li><a>Projects</a></li>
-        <li><a>Contact</a></li>
-        <li style="float: right"><a>Login</a></li>
-    </ul>
+<div id="head" class="row">
+    <div class="col-1"><a >Logo</a></div>
+    <div class="col-1"><a>Home</a></div>
+    <div class="col-1"><a>About</a></div>
+    <div class="col-1"><a>Projects</a></div>
+    <div class="col-1"> <a>Contact</a></div>
+    <div class="col-7"><a style="float: right">Login</a></div>
 </div>
-<div>
-    <div id="content1">
+<div class="row">
+    <div class="col-3">
         <h4>Link 1</h4>
         <h4>Link 2</h4>
         <h4>Link 3</h4>
     </div>
-    <div id="content2">
+    <div class="col-6">
         <h1>WELCOME</h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
             et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -34,11 +32,13 @@
         <h2>Test</h2>
         <p>Lorem ipsum...</p>
     </div>
-    <div id="content3">
-        <div class="div">ADS</div>
-        <div class="div">ADS</div>
+    <div class="col-3">
+        <div class="ad">ADS</div>
+        <div class="ad">ADS</div>
     </div>
 </div>
+<div class="row">
 <div id="footer">Footer text</div>
+</div>
 </body>
 </html>
