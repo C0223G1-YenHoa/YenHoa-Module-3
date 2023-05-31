@@ -6,6 +6,6 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<button><a href="/CustomerServlet">Hiển thị danh sách</a></button>
+<button><a href="/customer_servlet">Hiển thị danh sách</a></button>
 </body>
 </html>

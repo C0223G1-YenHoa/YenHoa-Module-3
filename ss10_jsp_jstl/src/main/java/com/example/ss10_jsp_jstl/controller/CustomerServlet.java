@@ -9,7 +9,7 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CustomerServlet", value = "/CustomerServlet")
+@WebServlet(name = "CustomerServlet", value = "/customer_servlet")
 public class CustomerServlet extends HttpServlet {
     private CustomerService customerService=new CustomerService();
     @Override
@@ -23,8 +23,8 @@ public class CustomerServlet extends HttpServlet {
             case "showformdelete":
                 break;
             default:
-                List<Customer> list= customerService.display();
-                request.setAttribute("list",list);
+                List<Customer> customerList= customerService.display();
+                request.setAttribute("customerList",customerList);
                 requestDispatcher=request.getRequestDispatcher("display.jsp");
                 requestDispatcher.forward(request,response);
                 break;

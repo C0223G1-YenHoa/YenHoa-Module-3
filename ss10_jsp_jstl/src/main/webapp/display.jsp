@@ -30,7 +30,7 @@
         <th>Địa chỉ</th>
         <th>Ảnh</th>
     </tr>
-    <c:forEach var="c" items="${list}" varStatus="loop">
+    <c:forEach var="c" items="${customerList}" varStatus="loop">
         <tr>
             <td>
                 <c:out value="${loop.count}"/>
