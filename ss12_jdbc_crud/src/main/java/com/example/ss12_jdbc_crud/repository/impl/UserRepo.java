@@ -10,19 +10,22 @@ import java.util.List;
 public class UserRepo implements IUserRepo {
     private static final String INSERT_USERS_SQL = "INSERT INTO users (name, email, country) VALUES (?, ?, ?);";
     private static final String SELECT_USER_BY_ID = "select id,name,email,country from users where id =?";
-    private static final String SELECT_ALL_USERS = "select * from users";
-    private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
-    private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+    private static final String SELECT_ALL_USERS = "call display_all()";
+    private static final String DELETE_USERS_SQL = "call delete_user(?)";
+    private static final String UPDATE_USERS_SQL = "call update_user(?,?,?,?)";
 
 
     @Override
     public void insertUser(User user) throws SQLException {
     Connection connection=BaseRepository.getConnection();
+    connection.setAutoCommit(false);
     PreparedStatement preparedStatement=connection.prepareStatement(INSERT_USERS_SQL);
     preparedStatement.setString(1,user.getName());
     preparedStatement.setString(2, user.getEmail());
     preparedStatement.setString(3,user.getCountry());
     preparedStatement.executeUpdate();
+    connection.rollback();
+    connection.commit();
     }
 
     @Override
@@ -31,17 +34,17 @@ public class UserRepo implements IUserRepo {
         String name=null;
         String email=null;
         String country=null;
+        int idSelect = 0;
         try {
-            Statement statement= connection1.createStatement();
-            ResultSet resultSet= statement.executeQuery(SELECT_USER_BY_ID);
+            PreparedStatement preparedStatement= connection1.prepareStatement(SELECT_USER_BY_ID);
+            ResultSet resultSet= preparedStatement.getResultSet();
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeQuery();
             while(resultSet.next()){
-                int findId=resultSet.getInt("id");
-               if(findId==id){
+                    idSelect = resultSet.getInt("id");
                     name=resultSet.getString("name");
                     email=resultSet.getString("email");
                     country=resultSet.getString("country");
-                    break;
-               }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,7 +55,7 @@ public class UserRepo implements IUserRepo {
                 e.printStackTrace();
             }
         }
-        return new User(id,name,email,country);
+        return new User(idSelect,name,email,country);
     }
 
     @Override
@@ -60,8 +63,10 @@ public class UserRepo implements IUserRepo {
         List<User> listUsers=new ArrayList<>();
         Connection connection= BaseRepository.getConnection();
         try {
-            Statement statement= connection.createStatement();
-            ResultSet resultSet= statement.executeQuery(SELECT_ALL_USERS);
+//            Statement statement= connection.createStatement();
+//            ResultSet resultSet= statement.executeQuery(SELECT_ALL_USERS);
+            CallableStatement callableStatement= connection.prepareCall(SELECT_ALL_USERS);
+            ResultSet resultSet= callableStatement.executeQuery();
             while(resultSet.next()){
                 int id=resultSet.getInt("id");
                 String name=resultSet.getString("name");
@@ -84,19 +89,22 @@ public class UserRepo implements IUserRepo {
     @Override
     public void deleteUser(int id) throws SQLException {
         Connection connection=BaseRepository.getConnection();
-        PreparedStatement preparedStatement=connection.prepareStatement(DELETE_USERS_SQL);
-        preparedStatement.setInt(1,id);
-        preparedStatement.executeUpdate();
+//        PreparedStatement preparedStatement=connection.prepareStatement(DELETE_USERS_SQL);
+        CallableStatement callableStatement= connection.prepareCall(DELETE_USERS_SQL);
+        callableStatement.setInt(1,id);
+        callableStatement.executeUpdate();
     }
 
     @Override
-    public void updateUser(int id,String name, String email, String country) throws SQLException {
+    public void updateUser(User user) throws SQLException {
         Connection connection=BaseRepository.getConnection();
-        PreparedStatement preparedStatement=connection.prepareStatement(INSERT_USERS_SQL);
-        preparedStatement.setString(1,setName());
-        preparedStatement.setString(2, user.getEmail());
-        preparedStatement.setString(3,user.getCountry());
-        preparedStatement.executeUpdate();
+//        PreparedStatement preparedStatement=connection.prepareStatement(UPDATE_USERS_SQL);
+        CallableStatement callableStatement= connection.prepareCall(UPDATE_USERS_SQL);
+        callableStatement.setString(1,user.getName());
+        callableStatement.setString(2, user.getEmail());
+        callableStatement.setString(3,user.getCountry());
+        callableStatement.setInt(4,user.getId());
+        callableStatement.executeUpdate();
     }
-
+    
 }

@@ -44,7 +44,7 @@
     <br>
     <tr>
         <label>ID :</label>
-        <input name="id" readonly value="${user.getId()}">
+        <input type="number" name="id" readonly value="${user.getId()}">
     </tr>
     <tr>
         <label>Nhập tên :</label>

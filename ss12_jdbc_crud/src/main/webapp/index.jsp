@@ -6,6 +6,7 @@
 </head>
 <body>
 <br/>
-<button><a href="/user">Hiển thị danh sách người dùng</a></button>
+<button><a href="/user">Hiển thị danh sách người dùng</a>
+</button>
 </body>
 </html>

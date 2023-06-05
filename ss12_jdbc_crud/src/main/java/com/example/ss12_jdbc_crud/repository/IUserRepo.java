@@ -14,6 +14,6 @@ public interface IUserRepo {
 
     void deleteUser(int id) throws SQLException;
 
-    void updateUser(int id,String name, String email, String country) throws SQLException;
+    void updateUser(User user) throws SQLException;
 
 }

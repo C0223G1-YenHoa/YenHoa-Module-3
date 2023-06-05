@@ -32,7 +32,7 @@ public class UsersService implements IUsersService {
     }
 
     @Override
-    public void updateUser(int id,String name, String email, String country) throws SQLException {
-        iUserRepo.updateUser(name,email,country);
+    public void updateUser(User user) throws SQLException {
+        iUserRepo.updateUser(user);
     }
 }

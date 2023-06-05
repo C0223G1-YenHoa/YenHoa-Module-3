@@ -17,6 +17,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <style>
         table {
             border-collapse: collapse;
@@ -69,7 +70,7 @@
                         onclick="remove(${u.id},'${u.name}')">
                     Xóa
                 </button>
-                <button> <a href="/user?action=edit">Sửa</a></button>
+                <button> <a href="/user?action=edit&id=${u.getId()}">Sửa</a></button>
             </td>
             </c:forEach>
         </tr>
@@ -97,7 +98,6 @@
 </div>
 <script>
     function remove(id,name){
-        console.log(id,name)
         document.getElementById("nameDelete").innerText=name;
         document.getElementById("idDelete").value=id;
     }
